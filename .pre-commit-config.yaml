@@ -1,0 +1,19 @@
+---
+# This file configures https://pre-commit.com/ to use specific hooks and options.
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      -   id: check-merge-conflict
+      -   id: end-of-file-fixer
+      -   id: trailing-whitespace
+  - repo: local
+    hooks:
+      - id: helm-pluto-chart-check
+        name: helm pluto chart check
+        entry: hooks/helm-pluto.py
+        language: script
+        require_serial: true
+        pass_filenames: false
+        args: ["--charts", "example-charts"]
