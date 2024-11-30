@@ -1,0 +1,12 @@
+---
+# This file tells https://pre-commit.com/ which hooks are provided by this repo
+# for use by other git repos.
+
+- id: helm-pluto-chart-check
+  name: helm pluto chart check
+  description: Find Kubernetes resources that have been deprecated
+  entry: hooks/helm-pluto.py
+  language: script
+  require_serial: true
+  pass_filenames: false
+  args: ["--charts", "charts"]
