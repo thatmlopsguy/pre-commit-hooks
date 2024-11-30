@@ -9,7 +9,7 @@ repos:
       - id: end-of-file-fixer
       - id: trailing-whitespace
   - repo: https://github.com/thatmlopsguy/pre-commit-hooks
-    rev: main
+    rev: v0.0.1
     hooks:
       - id: helm-pluto-chart-check
         args: ["--charts", "example-charts"]
