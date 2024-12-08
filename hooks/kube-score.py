@@ -37,7 +37,7 @@ def main(charts: str = None, fail_fast: bool = False):
         fails = 0
         if dir.is_dir():
             dir_name = dir.name
-            
+
             helm_template_cmd = ["helm", "template", f"{charts}/{dir_name}"]
             kube_score_cmd = ["kubectl-score", "score", "-"]
 

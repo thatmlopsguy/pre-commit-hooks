@@ -33,4 +33,3 @@ repos:
       #   require_serial: true
       #   pass_filenames: false
       #   args: ["--charts", "tests/example-charts"]
-
