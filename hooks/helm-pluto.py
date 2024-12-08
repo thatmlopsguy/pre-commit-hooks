@@ -10,12 +10,11 @@ def check_command_exists(command):
     try:
         subprocess.run([command], check=True, capture_output=True)
     except subprocess.CalledProcessError:
-        logging.error(f"{command} not installed or available in the PATH")
         print(f"{command} not installed or available in the PATH", file=sys.stderr)
         print(f"please check https://helm.sh/docs/intro/install/ for Helm and https://github.com/FairwindsOps/pluto for Pluto", file=sys.stderr)
         sys.exit(1)
 
-def main(charts:str = None):
+def main(charts: str = None):
     if charts is None:
         # Try to get the chart directory from an environment variable
         charts = os.environ.get('CHART_DIR')
@@ -53,7 +52,6 @@ def main(charts:str = None):
                 print(f"helm chart {dir_name}")
                 print(output.strip())
                 sys.exit(1)
-
 
             except subprocess.SubprocessError as e:
                 print(f"Error running command for {dir_name}: {e}", file=sys.stderr)
