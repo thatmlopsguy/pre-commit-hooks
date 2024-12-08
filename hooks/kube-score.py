@@ -8,7 +8,7 @@ from pathlib import Path
 
 def check_command_exists(command):
     try:
-        subprocess.run([command])
+        subprocess.run([command], capture_output=True)
     except subprocess.CalledProcessError:
         print(f"ERROR: Missing {command} dependency.", file=sys.stderr)
         sys.exit(1)
@@ -33,8 +33,8 @@ def main(charts: str = None, fail_fast: bool = False):
         print(f"Error: Directory '{charts}' does not exist.")
         sys.exit(1)
 
+    fails = 0
     for dir in Path(charts).glob('*'):
-        fails = 0
         if dir.is_dir():
             dir_name = dir.name
 
@@ -53,11 +53,12 @@ def main(charts: str = None, fail_fast: bool = False):
                 output, error = kube_score.communicate(input=output)
 
                 if kube_score.returncode != 0:
-                    print(f"helm chart {dir_name}")
+                    print(f"helm chart {dir_name} needs attention!")
                     print(output.strip())
                     if fail_fast:
                         sys.exit(1)
                     fails += 1
+                    continue
 
             except subprocess.SubprocessError as e:
                 print(f"Error running command for {dir_name}: {e}", file=sys.stderr)

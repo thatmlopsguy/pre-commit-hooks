@@ -12,7 +12,7 @@ This pre-commit hook can be added into the `.pre-commit-config.yaml` file like t
 
 ```
   - repo: https://github.com/thatmlopsguy/pre-commit-hooks
-    rev: v0.0.2
+    rev: v0.0.3
     hooks:
       - id: helm-pluto-chart-check
         args: ["--charts", "tests/example-charts"]
@@ -38,7 +38,7 @@ This pre-commit hook can be added into the `.pre-commit-config.yaml` file like t
 
 ```
   - repo: https://github.com/thatmlopsguy/pre-commit-hooks
-    rev: v0.0.2
+    rev: v0.0.3
     hooks:
       - id: kubectl-score-chart-check
         args: ["--charts", "tests/example-charts"]
