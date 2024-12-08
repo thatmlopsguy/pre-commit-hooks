@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "chart2.chart" -}}
+{{- define "fail.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "chart2.labels" -}}
-helm.sh/chart: {{ include "chart2.chart" . }}
-{{ include "chart2.selectorLabels" . }}
+{{- define "fail.labels" -}}
+helm.sh/chart: {{ include "fail.chart" . }}
+{{ include "fail.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "chart2.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "chart2.name" . }}
+{{- define "fail.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "fail.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "chart2.serviceAccountName" -}}
+{{- define "fail.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "chart2.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "fail.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
