@@ -10,3 +10,11 @@
   require_serial: true
   pass_filenames: false
   args: ["--charts", "charts"]
+- id: kubectl-score-chart-check
+  name: kubectl-score chart check
+  description: Kubernetes object analysis with recommendations for improved reliability and security
+  entry: hooks/kube-score.py
+  language: script
+  require_serial: true
+  pass_filenames: false
+  args: ["--charts", "charts"]
