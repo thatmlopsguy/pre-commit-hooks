@@ -8,13 +8,18 @@ from pathlib import Path
 
 def check_command_exists(command):
     try:
-        subprocess.run([command], check=True, capture_output=True)
+        subprocess.run([command])
     except subprocess.CalledProcessError:
-        print(f"{command} not installed or available in the PATH", file=sys.stderr)
-        print(f"please check https://helm.sh/docs/intro/install/ for Helm and https://github.com/FairwindsOps/pluto for Pluto", file=sys.stderr)
+        print(f"ERROR: Missing {command} dependency.", file=sys.stderr)
         sys.exit(1)
 
-def main(charts: str = None):
+def main(charts: str = None, fail_fast: bool = False):
+
+    # Check for required tools
+    check_command_exists('kubectl')
+    check_command_exists('helm')
+    check_command_exists('kubectl-score')
+
     if charts is None:
         # Try to get the chart directory from an environment variable
         charts = os.environ.get('CHART_DIR')
@@ -29,11 +34,12 @@ def main(charts: str = None):
         sys.exit(1)
 
     for dir in Path(charts).glob('*'):
+        fails = 0
         if dir.is_dir():
             dir_name = dir.name
 
             helm_template_cmd = ["helm", "template", f"{charts}/{dir_name}"]
-            pluto_detect_cmd = ["pluto", "detect", "--no-footer", "-"]
+            kube_score_cmd = ["kubectl-score", "score", "-"]
 
             try:
                 helm_process = subprocess.Popen(helm_template_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
@@ -43,24 +49,28 @@ def main(charts: str = None):
                     print(f"Error running helm template for {dir_name}: {error}", file=sys.stderr)
                     continue
 
-                pluto_process = subprocess.Popen(pluto_detect_cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-                output, error = pluto_process.communicate(input=output)
+                kube_score = subprocess.Popen(kube_score_cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                output, error = kube_score.communicate(input=output)
 
-                if output.startswith("There were no resources"):
-                    continue
-
-                print(f"helm chart {dir_name}")
-                print(output.strip())
-                sys.exit(1)
+                if kube_score.returncode != 0:
+                    print(f"helm chart {dir_name}")
+                    print(output.strip())
+                    if fail_fast:
+                        sys.exit(1)
+                    fails += 1
 
             except subprocess.SubprocessError as e:
                 print(f"Error running command for {dir_name}: {e}", file=sys.stderr)
                 sys.exit(1)
 
+        if fails > 0:
+            sys.exit(1)
+
+
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="Check Helm charts with Pluto")
+    parser = argparse.ArgumentParser(description="Check Helm charts with kube-score")
     parser.add_argument("--charts", help="Path to the directory containing Helm charts")
     args = parser.parse_args()
 

@@ -5,11 +5,31 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
+      - id: check-added-large-files
       - id: check-merge-conflict
       - id: end-of-file-fixer
       - id: trailing-whitespace
   - repo: https://github.com/thatmlopsguy/pre-commit-hooks
-    rev: v0.0.1
+    rev: v0.0.2
     hooks:
       - id: helm-pluto-chart-check
-        args: ["--charts", "example-charts"]
+        args: ["--charts", "tests/example-charts"]
+      - id: kubectl-score-chart-check
+        args: ["--charts", "tests/example-charts"]
+  # - repo: local
+  #   hooks:
+      # - id: helm-pluto-chart-check
+      #   name: helm pluto chart check
+      #   entry: hooks/helm-pluto.py
+      #   language: script
+      #   require_serial: true
+      #   pass_filenames: false
+      #   args: ["--charts", "tests/example-charts"]
+      # - id: kubectl-score-chart-check
+      #   name: kubectl-score chart check
+      #   entry: hooks/kube-score.py
+      #   language: script
+      #   verbose: true
+      #   require_serial: true
+      #   pass_filenames: false
+      #   args: ["--charts", "tests/example-charts"]
