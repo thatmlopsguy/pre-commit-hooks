@@ -29,6 +29,10 @@ repos:
     hooks:
       - id: commitizen
         stages: [commit-msg]
+  - repo: https://github.com/betterleaks/betterleaks
+    rev: v1.1.1
+    hooks:
+      - id: betterleaks
   - repo: https://github.com/thatmlopsguy/pre-commit-hooks
     rev: v0.0.3
     hooks:
