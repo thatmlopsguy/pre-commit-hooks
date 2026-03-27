@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: "broken"
+    static_configs:
+      - targets: ["localhost:9090"]
+    invalid_field_that_does_not_exist: true

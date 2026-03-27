@@ -9,6 +9,26 @@ repos:
       - id: check-merge-conflict
       - id: end-of-file-fixer
       - id: trailing-whitespace
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.4
+    hooks:
+      - id: ruff-check
+        args:
+          - --fix
+      - id: ruff-format
+  - repo: https://github.com/abravalheri/validate-pyproject
+    rev: v0.25
+    hooks:
+      - id: validate-pyproject
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.2
+    hooks:
+      - id: codespell
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.13.9
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
   - repo: https://github.com/thatmlopsguy/pre-commit-hooks
     rev: v0.0.3
     hooks:
@@ -16,8 +36,8 @@ repos:
         args: ["--charts", "tests/example-charts"]
       - id: kubectl-score-chart-check
         args: ["--charts", "tests/example-charts"]
-  # - repo: local
-  #   hooks:
+  #  - repo: local
+  #    hooks:
   #     - id: helm-pluto-chart-check
   #       name: helm pluto chart check
   #       entry: hooks/helm-pluto.py
@@ -34,3 +54,21 @@ repos:
   #       require_serial: true
   #       pass_filenames: false
   #       args: ["--charts", "tests/example-charts"]
+      # - id: promtool-check-rules
+      #   name: promtool check rules
+      #   entry: hooks/promtool.py
+      #   language: script
+      #   verbose: true
+      #   require_serial: true
+      #   types: [yaml]
+      #   args: ["--type", "rules"]
+      #   files: tests/example-prometheus/.*rules\.yml$
+      # - id: promtool-check-config
+      #   name: promtool check config
+      #   entry: hooks/promtool.py
+      #   language: script
+      #   verbose: true
+      #   require_serial: true
+      #   pass_filenames: true
+      #   args: ["--type", "config"]
+      #   files: tests/example-prometheus/.*config\.yml$

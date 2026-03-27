@@ -18,3 +18,19 @@
   require_serial: true
   pass_filenames: false
   args: ["--charts", "charts"]
+- id: promtool-check-rules
+  name: promtool check rules
+  description: Validate Prometheus rules files with promtool
+  entry: hooks/promtool.py
+  language: script
+  require_serial: true
+  types: [yaml]
+  args: ["--type", "rules"]
+- id: promtool-check-config
+  name: promtool check config
+  description: Validate Prometheus configuration files with promtool
+  entry: hooks/promtool.py
+  language: script
+  require_serial: true
+  pass_filenames: true
+  args: ["--type", "config"]

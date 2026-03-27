@@ -1,0 +1,27 @@
+[project]
+name = "pre-commit-hooks"
+version = "0.1.0"
+description = "Git hooks to integrate with pre-commit or prek"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "prek>=0.3.6",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "pytest-cov>=6.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["hooks"]
+
+[tool.coverage.run]
+source = ["hooks"]
+omit = ["hooks/helm-pluto.py", "hooks/kube-score.py"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 80

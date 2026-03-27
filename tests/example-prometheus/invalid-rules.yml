@@ -1,0 +1,7 @@
+groups:
+  - name: broken
+    rules:
+      - alert: MissingExpr
+        for: 5m
+        labels:
+          severity: critical
